@@ -1,1 +1,1 @@
-web: gunicorn e_shop1.wsgi --log-file -
+web: gunicorn e_shop.wsgi --log-file -
