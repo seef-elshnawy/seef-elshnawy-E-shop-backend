@@ -7,6 +7,8 @@ from .serializer import log,shop
 from .models import Users,Products
 from django.core.mail import send_mail,EmailMessage
 from django.template.loader import render_to_string
+from django.contrib.auth.hashers import make_password,check_password
+
 # Create your views here.
 
 @api_view(['GET'])
@@ -18,6 +20,7 @@ def getUsers(request):
 @api_view(['POST'])
 def addUser(request):
   serializer=log(data=request.data)
+  request.data['password']=make_password(request.data['password'])
   if serializer.is_valid():
     subject=f'message from {request.data["name"]}'
     message=render_to_string("ecommarce/index.html",{'Name':request.data['name']})
@@ -59,7 +62,7 @@ def deleteUser(request,pk):
 @api_view(['POST'])
 def Login(request):
  user=Users.objects.get(nick_name=request.data['nick_name'])
- if user.password==request.data['password']:
+ if check_password(request.data['password'],user.password):
   serializer=log(user,many=False)
  else:
     return HttpResponse(None)
