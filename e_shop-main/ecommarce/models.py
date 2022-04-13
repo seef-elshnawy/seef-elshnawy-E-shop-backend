@@ -1,6 +1,7 @@
 from unicodedata import name
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from PIL import Image
 
 # Create your models here.
 
@@ -24,7 +25,15 @@ class Users(models.Model):
  img=models.ImageField(blank=True,default='',null=True,upload_to=upload_path)
  admin=models.BooleanField(default=False,blank=True)
  customer=models.BooleanField(default=False,blank=True)
-
+    
+ def save(self,*args,**kwargs):
+    super().save(*args,**kwargs)
+    imgs=Image.open(self.img.path)
+    if imgs.height > 300 or imgs.weight > 300:
+       out_size=(300,300)
+       imgs.thumbnail(out_size)
+       imgs.save(self.img.path)  
+    
  def __str__(self):
   return f'id: {self.id} name: {self.name} email: {self.email} admin: {self.admin} customer: {self.customer}' 
 
