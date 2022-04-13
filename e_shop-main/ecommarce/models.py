@@ -19,7 +19,7 @@ class Users(models.Model):
  name=models.CharField(max_length=100,default='')
  nick_name=models.CharField(max_length=100,default='',unique=True)
  email=models.EmailField(_('email adress'),unique=True)
- password=models.CharField(max_length=22,default='')
+ password=models.CharField(max_length=200,default='')
  phone=models.IntegerField()
  country=models.CharField(choices=country_choice,max_length=16)
  img=models.ImageField(blank=True,default='',null=True,upload_to=upload_path)
