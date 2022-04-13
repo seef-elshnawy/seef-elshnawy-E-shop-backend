@@ -21,6 +21,7 @@ def getUsers(request):
 def addUser(request):
   serializer=log(data=request.data)
   request.data['password']=make_password(request.data['password'])
+  request.data._mutable= True
   if serializer.is_valid():
     subject=f'message from {request.data["name"]}'
     message=render_to_string("ecommarce/index.html",{'Name':request.data['name']})
