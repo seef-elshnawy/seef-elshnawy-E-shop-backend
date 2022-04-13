@@ -3,7 +3,8 @@ from rest_framework import serializers
 from .models import Users,Products
 
 class log(serializers.ModelSerializer):
-    request.data._mutable= True
+    def create(request,*args,**kwargs):
+      request.data._mutable= True
     class Meta:
       model=(Users)
       fields='__all__'
