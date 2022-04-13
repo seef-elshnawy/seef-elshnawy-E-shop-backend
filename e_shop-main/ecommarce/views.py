@@ -48,6 +48,7 @@ def addUser(request):
 def updateUser(request,pk):
  user=Users.objects.get(id=pk)
  serializer=log(user,data=request.data,many=False)
+ request.data['password']=make_password(request.data['password']) 
  if serializer.is_valid():
      serializer.save()
      return redirect('users')
