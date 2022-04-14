@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializer import log,shop
+from .serializer import log,shop,newPass
 from .models import Users,Products
 from django.core.mail import send_mail,EmailMessage
 from django.template.loader import render_to_string
@@ -45,13 +45,22 @@ def addUser(request):
   return Response(serializer.data)
 
 @api_view(['POST'])
-def updateUser(request,pk):
+def updateUser(request,pk,*args,**kwargs):
+    user=Users.objects.get(id=pk)
+    serializer=log(user,data=request.data,many=False)
+    if serializer.is_valid():
+        serializer.save()
+        return redirect('users')
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def Resetpassword(request,pk):
  user=Users.objects.get(id=pk)
- serializer=log(user,data=request.data,many=False)
- request.data['password']=make_password(request.data['password']) 
+ serializer=newPass(user,data=request.data,many=False)
+ request.data['password']=make_password(request.data['password'])
  if serializer.is_valid():
-     serializer.save()
-     return redirect('users')
+   serializer.save()
+   return redirect('users')
  return Response(serializer.data)
 
 @api_view(['DELETE'])
