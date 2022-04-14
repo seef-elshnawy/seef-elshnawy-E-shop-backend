@@ -11,3 +11,8 @@ class shop(serializers.ModelSerializer):
   class Meta:
     model=(Products)
     fields='__all__'
+    
+class newPass(serializers.ModelSerializer):
+  class Meta:
+    model=(Users)
+    fields=['password']
