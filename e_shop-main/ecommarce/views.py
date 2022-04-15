@@ -73,7 +73,7 @@ def deleteUser(request,pk):
 def Login(request):
  user=Users.objects.get(nick_name=request.data['nick_name'])
  if check_password(request.data['password'],user.password):
-  serializer=signup(user,many=False)
+  serializer=log(user,many=False)
  else:
     return HttpResponse(None)
  return Response(serializer.data)
