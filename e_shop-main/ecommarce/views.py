@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializer import log,shop,newPass
+from .serializer import log,shop,newPass,signup
 from .models import Users,Products
 from django.core.mail import send_mail,EmailMessage
 from django.template.loader import render_to_string
@@ -73,7 +73,7 @@ def deleteUser(request,pk):
 def Login(request):
  user=Users.objects.get(nick_name=request.data['nick_name'])
  if check_password(request.data['password'],user.password):
-  serializer=log(user,many=False)
+  serializer=signup(user,many=False)
  else:
     return HttpResponse(None)
  return Response(serializer.data)
