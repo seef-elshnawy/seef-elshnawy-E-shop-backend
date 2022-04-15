@@ -7,6 +7,11 @@ class log(serializers.ModelSerializer):
       model=(Users)
       fields=['id','name','nick_name','email','phone','country','img','admin','customer']
 
+class signup(serializers.ModelSerializer):
+    class Meta:
+      model=(Users)
+      fields=['nick_name','password']        
+        
 class shop(serializers.ModelSerializer):
   class Meta:
     model=(Products)
