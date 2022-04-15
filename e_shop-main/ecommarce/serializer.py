@@ -5,7 +5,7 @@ from .models import Users,Products
 class log(serializers.ModelSerializer):
     class Meta:
       model=(Users)
-      fields='__all__'
+      fields=['name','nick_name','email','phone','country','img','admin','customer']
 
 class shop(serializers.ModelSerializer):
   class Meta:
