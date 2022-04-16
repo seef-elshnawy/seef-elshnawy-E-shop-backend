@@ -1,14 +1,12 @@
-from django.conf import settings
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializer import log,shop,newPass,signup
+from .serializer import log,shop,newPass
 from .models import Users,Products
 from django.core.mail import send_mail,EmailMessage
 from django.template.loader import render_to_string
-from django.contrib.auth.hashers import make_password,check_password
-
+from django.contrib.auth.hashers import check_password,make_password
 # Create your views here.
 
 @api_view(['GET'])
@@ -20,13 +18,22 @@ def getUsers(request):
 @api_view(['POST'])
 def addUser(request):
   serializer=log(data=request.data)
-  request.data['password']=make_password(request.data['password'])
+  try:
+   request.data['password']=make_password(request.data['password'])
+  except :
+    pass
+  if Users.objects.filter(nick_name=request.data['nick_name']).exists():
+   return HttpResponse('this nick name is already used',status=405)  
+  
+  if Users.objects.filter(email=request.data['email']).exists():
+   return HttpResponse('this email is already used',status=405)
+
   if serializer.is_valid():
     subject=f'message from {request.data["name"]}'
     message=render_to_string("ecommarce/index.html",{'Name':request.data['name']})
     sender=request.data['email']
     recipients='elshnawyseef675@gmail.com'
-
+   
     email=EmailMessage(
      subject,
      message,
@@ -71,12 +78,16 @@ def deleteUser(request,pk):
 
 @api_view(['POST'])
 def Login(request):
- user=Users.objects.get(nick_name=request.data['nick_name'])
+ try: 
+  user=Users.objects.get(nick_name=request.data['nick_name'])
+ except Users.DoesNotExist:
+     raise Http404('No user with this nick name') 
  if check_password(request.data['password'],user.password):
-  serializer=log(user,many=False)
- else:
-    return HttpResponse(None)
+   serializer=log(user,many=False)
+ else: 
+    return HttpResponse('Password was wrong',status=405)
  return Response(serializer.data)
+ 
 
 
 @api_view(['GET'])
