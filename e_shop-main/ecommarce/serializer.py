@@ -5,7 +5,7 @@ from .models import Users,Products
 class log(serializers.ModelSerializer):
     class Meta:
       model=(Users)
-      fields=['id','name','nick_name','email','phone','country','img','admin','customer']
+      fields=['id','name','nick_name','email','password','phone','country','img','admin','customer']
 
 class signup(serializers.ModelSerializer):
     class Meta:
