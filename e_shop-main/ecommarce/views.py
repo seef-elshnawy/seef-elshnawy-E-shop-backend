@@ -18,10 +18,7 @@ def getUsers(request):
 @api_view(['POST'])
 def addUser(request):
   serializer=log(data=request.data)
-  try:
-   request.data['password']=make_password(request.data['password'])
-  except :
-    pass
+  request.data['password']=make_password(request.data['password'])
   if Users.objects.filter(nick_name=request.data['nick_name']).exists():
    return HttpResponse('this nick name is already used',status=405)  
   
