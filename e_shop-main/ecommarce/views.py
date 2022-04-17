@@ -73,7 +73,7 @@ def deleteUser(request,pk):
   user.delete()
   return Response('delete sucsess')
 
-@api_view(['POST'])
+@api_view(['POST','GET])
 def Login(request):
  try: 
   user=Users.objects.get(nick_name=request.data['nick_name'])
