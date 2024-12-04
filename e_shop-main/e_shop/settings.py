@@ -42,6 +42,13 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,6 +93,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+import dj_database_url
+db_from_env=dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -139,12 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #EMAIL_BACKEND="sendgrid_backend.SendgridBackend"
 #SEND_GRID_API_KEY='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'
-#SENDGRID_SANDBOX_MODE_IN_DEBUG=False
-
+SENDGRID_SANDBOX_MODE_IN_DEBUG=False
 EMAIL_BACKEND="django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_HOST_USER='elshnawyseef675@gmail.com'
-EMAIL_HOST_PASSWORD='seef44*+*'
+EMAIL_HOST="smtp.sendgrid.net"
+EMAIL_HOST_USER='apikey'
+EMAIL_HOST_PASSWORD='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'
 EMAIL_PORT=587
 EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL='elshnawyseef675@gmail.com'
 
